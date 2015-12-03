@@ -45,7 +45,7 @@ def text_to_words(text):
         and applying word stem.normalized words from a text. """
     stop = stopwords.words('english')
     porter = PorterStemmer()
-    tokens = word_tokenize(text)
+    tokens = wordpunct_tokenize(text)
     words = set([porter.stem(w.lower()) for w in tokens if w.lower() not in stop])
     return words
 

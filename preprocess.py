@@ -1,4 +1,3 @@
-from text_to_word_cloud import *
 from nltk import *
 from collections import Counter
 from nltk.corpus import stopwords

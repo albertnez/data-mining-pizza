@@ -62,7 +62,7 @@ def post_got_pizza(post):
 def write_data(output_filename, data, words):
     """ Writes a .csv for each post, which words does it contain. """
     with open(output_filename, 'w') as output_file:
-        fieldnames = list(words) + [PIZZA_FIELD]
+        fieldnames = sorted(words) + [PIZZA_FIELD]
         # Write fields
         output_file.write(' '.join(fieldnames) + '\n')
         for post in data:

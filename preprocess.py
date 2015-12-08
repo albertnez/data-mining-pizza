@@ -2,13 +2,14 @@ from nltk import *
 from collections import Counter
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
-from csv import DictWriter
 import json
 
 
 TEXT_KEY = 'request_text'
 EDIT_KEY = 'request_text_edit_aware'
 PIZZA_KEY = 'requester_received_pizza'
+PIZZA_FIELD = '@@requester_received_pizza@@'  # Make sure this is not a word contained in dataset.
+DIGITS_RE = re.compile('\d')
 FORBIDEN_WORDS = [',', '.']
 
 
@@ -20,9 +21,9 @@ def load_data(filename):
 
 def get_post_text(post):
     """ Returns the text from a post. """
-    if post.has_key(TEXT_KEY):
+    if TEXT_KEY in post:
         return post[TEXT_KEY]
-    elif post.has_key(EDIT_KEY):
+    elif EDIT_KEY in post:
         return post[EDIT_KEY]
     return ""
 
@@ -36,8 +37,9 @@ def get_all_text(data):
 
 
 def is_ok_word(word):
-    """ Returns whether the word is ok or should be filtered. """
-    return word[-1] != '\\' and word not in FORBIDEN_WORDS
+    """ Returns whether the word is ok or should be filtered.
+        Filters words that are commas, points, or contain digits """
+    return word[-1] != '\\' and word not in FORBIDEN_WORDS and not bool(DIGITS_RE.search(word))
 
 
 def text_to_words(text):
@@ -46,20 +48,30 @@ def text_to_words(text):
     stop = stopwords.words('english')
     porter = PorterStemmer()
     tokens = wordpunct_tokenize(text)
-    words = set([porter.stem(w.lower()) for w in tokens if w.lower() not in stop])
+    words = set([porter.stem(w.lower()) for w in tokens if is_ok_word(w) and w.lower() not in stop])
     return words
+
+
+def post_got_pizza(post):
+    """ Returns whether a post was given pizza. If there is no field, returns false. """
+    if PIZZA_KEY in post:
+        return post[PIZZA_KEY]
+    return false
 
 
 def write_data(output_filename, data, words):
     """ Writes a .csv for each post, which words does it contain. """
     with open(output_filename, 'w') as output_file:
-        writer = DictWriter(output_file, delimiter=' ', fieldnames=words)
-        writer.writeheader()
-        # Write a row for each data entry.
+        fieldnames = list(words) + [PIZZA_FIELD]
+        # Write fields
+        output_file.write(' '.join(fieldnames) + '\n')
         for post in data:
             post_words = text_to_words(get_post_text(post))
+            # Create a dictionary with each word, indicating if it is contained or not
             dict_contains = dict(map(lambda w : (w, int(w in post_words)), words))
-            writer.writerow(dict_contains)
+            # Add the field indicating if the post received the pizza.
+            dict_contains[PIZZA_FIELD] = int(post_got_pizza(post))
+            output_file.write(' '.join([str(dict_contains.get(k, 0)) for k in fieldnames]) + '\n')
 
 
 if __name__ == '__main__':

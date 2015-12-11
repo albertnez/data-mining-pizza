@@ -38,7 +38,7 @@ def get_all_text(data):
 def is_ok_word(word):
     """ Returns whether the word is ok or should be filtered.
         Filters words that are commas, points, or contain digits """
-    return word[-1] != '\\' and not LETTERS_RE.search(word)
+    return not LETTERS_RE.search(word)
 
 
 def text_to_words(text):

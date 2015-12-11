@@ -31,12 +31,7 @@ clf.fit(features[learning], targets[learning])
 prediction = clf.predict(features[testing])
 
 # Count the number of errors.
-targetsPredicted = targets[testing]
-errors = 0
-for i in range(ntesting-1):
-	if(targetsPredicted[i] != prediction[i]):
-		errors = errors + 1
-
-print('Prediction:', prediction[testing])
-print('Targets:   ', targets[testing])
-print('Num errors:', errors)
+diff = targets[testing] != prediction
+nerrors = sum(diff)
+percError = nerrors/ntesting
+print('Percentage of error:', round(percError*100,2))

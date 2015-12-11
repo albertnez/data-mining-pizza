@@ -9,8 +9,7 @@ TEXT_KEY = 'request_text'
 EDIT_KEY = 'request_text_edit_aware'
 PIZZA_KEY = 'requester_received_pizza'
 PIZZA_FIELD = '@@requester_received_pizza@@'  # Make sure this is not a word contained in dataset.
-DIGITS_RE = re.compile('\d')
-FORBIDEN_WORDS = [',', '.']
+LETTERS_RE = re.compile(r'[^a-z]')
 
 
 def load_data(filename):
@@ -39,7 +38,7 @@ def get_all_text(data):
 def is_ok_word(word):
     """ Returns whether the word is ok or should be filtered.
         Filters words that are commas, points, or contain digits """
-    return word[-1] != '\\' and word not in FORBIDEN_WORDS and not bool(DIGITS_RE.search(word))
+    return word[-1] != '\\' and not LETTERS_RE.search(word)
 
 
 def text_to_words(text):

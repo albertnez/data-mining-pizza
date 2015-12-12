@@ -1,10 +1,10 @@
 #! /usr/bin/env python3
-from nltk import *
-from collections import Counter
+import re
+import json
+from nltk import wordpunct_tokenize
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
-import json
-
+from collections import Counter
 
 TEXT_KEY = 'request_text'
 EDIT_KEY = 'request_text_edit_aware'
@@ -33,7 +33,7 @@ def get_all_text(data):
     text = ""
     for post in data:
         text += get_post_text(post)
-    return text 
+    return text
 
 
 def is_ok_word(word):

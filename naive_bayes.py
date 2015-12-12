@@ -1,8 +1,5 @@
 #! /usr/bin/env python3
-import numpy as np
 import pandas as pd
-import math
-import random
 from sklearn.naive_bayes import BernoulliNB
 from sklearn import cross_validation
 
@@ -30,4 +27,4 @@ for traincv, testcv in cv:
     percError = nerrors/len(prediction)
     results.append(percError)
 
-print ("Results:", str(np.array(results).mean()))
+print ("Results:", str(sum(results)/len(results)))

@@ -23,16 +23,3 @@ testing = list(set(range(N))-set(learning))
 
 nlearning = len(learning)
 ntesting = len(testing)
-
-# Train Naive Bayes with the training set
-clf = BernoulliNB()
-clf.fit(features[learning], targets[learning])
-
-# Predict the testing set data
-prediction = clf.predict(features[testing])
-
-# Count the number of errors.
-diff = targets[testing] != prediction
-nerrors = sum(diff)
-percError = nerrors/ntesting
-print('Percentage of error:', round(percError*100,2))

@@ -1,3 +1,4 @@
+#! usr/bin/env python3
 """
 This code prepares the cloud data in a format R can  read it  in
 using read_table, for use by the R wordcloud package.

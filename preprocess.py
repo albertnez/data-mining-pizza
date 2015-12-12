@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 from nltk import *
 from collections import Counter
 from nltk.corpus import stopwords

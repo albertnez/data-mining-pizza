@@ -6,8 +6,6 @@ import random
 from sklearn.naive_bayes import BernoulliNB
 from sklearn import cross_validation
 
-PIZZA_FIELD = '@@requester_received_pizza@@'
-
 df = pd.read_csv('output.csv', delim_whitespace=True)
 
 # Divide data frame to feature and target

@@ -42,13 +42,15 @@ def is_ok_word(word):
     return not LETTERS_RE.search(word)
 
 
-def text_to_words(text):
+def text_to_words(text, as_set=True):
     """ Returns the set of words from given text, removing stopwords,
         and applying word stem.normalized words from a text. """
     stop = stopwords.words('english')
     porter = PorterStemmer()
     tokens = wordpunct_tokenize(text)
-    words = set([porter.stem(w.lower()) for w in tokens if is_ok_word(w) and w.lower() not in stop])
+    words = [porter.stem(w.lower()) for w in tokens if is_ok_word(w) and w.lower() not in stop]
+    if as_set is True:
+        words = set(words)
     return words
 
 
